@@ -10,11 +10,15 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
+
+
 //Configure app
 app.UseSwagger();
 app.UseSwaggerUI();
 
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+
+
 
 //Create Get endpoints;
 app.MapGet("/", () => Results.Redirect("/swagger/index.html")).ExcludeFromDescription();
@@ -22,6 +26,9 @@ app.MapGet("/api/products", async (SimplePondresContext db) => await db.products
 app.MapGet("/api/products/{id}", async (SimplePondresContext db, int id) => await db.products.FindAsync(id));
 app.MapGet("/api/orders", async (SimplePondresContext db) => await db.orders.ToListAsync());
 app.MapGet("/api/orders/{id}", async (SimplePondresContext db, int id) => await db.orders.FindAsync(id));
+
+
+
 
 //Create Post endpoints
 app.MapPost("/api/orders", async (SimplePondresContext db, Order order) =>
@@ -38,6 +45,9 @@ app.MapPost("/internalApi/products", async (SimplePondresContext db, Product pro
     Results.Accepted();
 });
 
+
+
+
 //Create Delete endpoint
 app.MapDelete("/internalApi/products/{id}", async (SimplePondresContext db, int id) =>
 {
@@ -52,6 +62,9 @@ app.MapDelete("/internalApi/products/{id}", async (SimplePondresContext db, int 
         return Results.Ok();
     }
 });
+
+
+
 
 //Create Put endpoint
 app.MapPut("/internalApi/orders/{id}", async (SimplePondresContext db, int id, string state) =>
@@ -70,6 +83,8 @@ app.MapPut("/internalApi/orders/{id}", async (SimplePondresContext db, int id, s
         return Results.Ok();
     }
 });
+
+
 
 
 app.Run();
